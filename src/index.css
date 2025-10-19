@@ -1,0 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap");
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+}
+
+:root {
+  font-size: 12px;
+  --color-text: rgb(140, 146, 164);
+  --color-bg: #000;
+  --color-link: rgb(140, 146, 164);
+  --color-link-hover: #fff;
+  --hud-side-gap: 2rem;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+}
+
+@supports (height: 100svh) {
+  html,
+  body {
+    min-height: 100svh;
+  }
+}
+
+body {
+  margin: 0;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, "Roboto Mono", monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+canvas {
+  display: block;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+}
+
+#leva__root .glitch-panel {
+  position: fixed !important;
+  top: 2.5rem;
+  right: var(--hud-side-gap);
+  width: min(280px, calc(100vw - 2rem));
+  border: 1px solid rgba(63, 215, 255, 0.5);
+  border-radius: 12px;
+  background: linear-gradient(160deg, rgba(18, 18, 32, 0.95), rgba(8, 8, 18, 0.85));
+  box-shadow:
+    0 0 24px rgba(63, 215, 255, 0.24),
+    0 0 48px rgba(255, 77, 184, 0.18);
+  backdrop-filter: blur(6px);
+  overflow: hidden;
+  pointer-events: auto;
+  isolation: isolate;
+  z-index: 1200;
+}
+
+#leva__root .glitch-panel::before,
+#leva__root .glitch-panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+#leva__root .glitch-panel::before {
+  opacity: 0.25;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(63, 215, 255, 0.18) 0,
+    rgba(63, 215, 255, 0.18) 2px,
+    transparent 2px,
+    transparent 5px
+  );
+  animation: panelGlitch 2.8s steps(4) infinite;
+}
+
+#leva__root .glitch-panel::after {
+  opacity: 0.16;
+  background: repeating-linear-gradient(
+    to right,
+    rgba(255, 77, 184, 0.2) 0,
+    rgba(255, 77, 184, 0.2) 3px,
+    transparent 3px,
+    transparent 6px
+  );
+  animation: panelGlitchAlt 3.6s steps(5) infinite;
+}
+
+#leva__root .glitch-panel > * {
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes panelGlitch {
+  0% { transform: translate3d(0, 0, 0); opacity: 0.18; }
+  20% { transform: translate3d(-4px, -2px, 0); }
+  40% { transform: translate3d(3px, 1px, 0); opacity: 0.32; }
+  60% { transform: translate3d(-2px, 3px, 0); opacity: 0.24; }
+  80% { transform: translate3d(2px, -3px, 0); opacity: 0.2; }
+  100% { transform: translate3d(1px, -1px, 0); opacity: 0.25; }
+}
+
+@keyframes panelGlitchAlt {
+  0% { transform: translate3d(0, 0, 0); opacity: 0.2; }
+  25% { transform: translate3d(2px, -1px, 0); }
+  50% { transform: translate3d(-3px, 2px, 0); opacity: 0.14; }
+  75% { transform: translate3d(3px, -2px, 0); opacity: 0.22; }
+  100% { transform: translate3d(0, 0, 0); opacity: 0.2; }
+}
+
+@media (max-width: 768px) {
+  #leva__root .glitch-panel {
+    top: auto;
+    bottom: 1.5rem;
+    right: 1rem;
+    left: 1rem;
+    width: auto;
+    max-width: none;
+  }
+
+  .frame {
+    left: 1rem;
+    top: 2rem;
+  }
+}
+
+.frame {
+  position: fixed;
+  top: 2.5rem;
+  left: var(--hud-side-gap);
+  z-index: 1100;
+}
+
+.frame__title {
+  margin: 0;
+}
