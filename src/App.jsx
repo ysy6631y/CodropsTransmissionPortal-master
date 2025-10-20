@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { memo, useCallback, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Environment,
@@ -37,7 +37,7 @@ const levaTheme = {
   },
 };
 
-function GlassModel() {
+const GlassModel = memo(function GlassModel() {
   const {
     roughness,
     transmission,
@@ -112,7 +112,32 @@ function GlassModel() {
       </RoundedBox>
     </>
   );
-}
+});
+
+const SceneCanvas = memo(function SceneCanvas() {
+  return (
+    <Canvas camera={{ position: [0, 0, 3], fov: 75 }} dpr={[1, 1.75]}>
+      <color attach="background" args={["#111111"]} />
+      <Environment preset="warehouse" blur={1} />
+      <OrbitControls />
+      <ambientLight />
+      <pointLight position={[10, 10, 10]} />
+      <GlassModel />
+    </Canvas>
+  );
+});
+
+const LevaPanel = memo(function LevaPanel() {
+  return (
+    <Leva
+      className="glitch-panel"
+      titleBar={{ title: "Portal Controls", drag: false }}
+      hideTitleBar={false}
+      collapsed={false}
+      theme={levaTheme}
+    />
+  );
+});
 
 function App() {
   const [overlayOpen, setOverlayOpen] = useState(false);
@@ -127,14 +152,7 @@ function App() {
 
   return (
     <>
-      <Canvas camera={{ position: [0, 0, 3], fov: 75 }}>
-        <color attach="background" args={["#111111"]} />
-        <Environment preset="warehouse" blur={1} />
-        <OrbitControls />
-        <ambientLight />
-        <pointLight position={[10, 10, 10]} />
-        <GlassModel />
-      </Canvas>
+      <SceneCanvas />
       <button
         type="button"
         className={`hud-lens-toggle ${overlayOpen ? "is-active" : ""}`}
@@ -145,13 +163,7 @@ function App() {
         <span className="hud-lens-toggle__label">Magnifier</span>
       </button>
       <ZoomOverlay isOpen={overlayOpen} onRequestClose={handleOverlayClose} />
-      <Leva
-        className="glitch-panel"
-        titleBar={{ title: "Portal Controls", drag: false }}
-        hideTitleBar={false}
-        collapsed={false}
-        theme={levaTheme}
-      />
+      <LevaPanel />
     </>
   );
 }
